@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OrderDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">dal</a> &gt; <span class="el_source">OrderDAO.java</span></div><h1>OrderDAO.java</h1><pre class="source lang-java linenums">package dal;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import model.Cart;
+import model.Item;
+import model.Order;
+
+/**
+ *
+ * @author admin
+ */
+
+<span class="fc" id="L21">public class OrderDAO extends DBContext {</span>
+
+<span class="fc" id="L23">    DecimalFormat df = new DecimalFormat(&quot;#.00&quot;);</span>
+
+    public void addOrder(Order order, Cart cart) throws Exception{
+<span class="nc" id="L26">        LocalDate curDate = java.time.LocalDate.now();</span>
+<span class="nc" id="L27">        String date = curDate.toString();</span>
+        try {
+            //add vào bang Order
+<span class="nc" id="L30">            String sql = &quot;INSERT INTO dbo.[Order] VALUES (?,?,?,ROUND(?, 2),ROUND(?, 2),ROUND(?, 2),?)&quot;;</span>
+<span class="nc" id="L31">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L32">            st.setString(1, order.getOdate());</span>
+<span class="nc" id="L33">            st.setString(2, order.getSdate());</span>
+<span class="nc" id="L34">            st.setString(3, order.getUsername());</span>
+<span class="nc" id="L35">            st.setFloat(4, Float.parseFloat(df.format(order.getPayment())));</span>
+<span class="nc" id="L36">            st.setFloat(5, Float.parseFloat(df.format(order.getShipping())));</span>
+<span class="nc" id="L37">            st.setFloat(6, Float.parseFloat(df.format(order.getPayment() + order.getShipping())));</span>
+<span class="nc" id="L38">            st.setInt(7, order.getStatus());</span>
+<span class="nc" id="L39">            st.executeQuery();</span>
+<span class="nc" id="L40">        } catch (SQLException ex) {</span>
+<span class="nc" id="L41">            throw new SQLException(&quot;Error&quot;);</span>
+<span class="nc" id="L42">        }</span>
+
+        try {
+            //lay ra id cua Order vua add
+<span class="nc" id="L46">            String sql1 = &quot;SELECT TOP 1 order_id FROM dbo.[Order] ORDER BY order_id DESC&quot;;</span>
+<span class="nc" id="L47">            PreparedStatement st1 = connection.prepareStatement(sql1);</span>
+<span class="nc" id="L48">            ResultSet rs = st1.executeQuery();</span>
+            //add vào bang OrderDetail
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L51">                int oid = rs.getInt(1);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                for (Item i : cart.getItems()) {</span>
+                    try {
+<span class="nc" id="L54">                        String sql2 = &quot;INSERT INTO dbo.orderDetails VALUES (?,?,ROUND(?, 2),?,ROUND(?, 2))&quot;;</span>
+<span class="nc" id="L55">                        PreparedStatement st2 = connection.prepareStatement(sql2);</span>
+<span class="nc" id="L56">                        st2.setInt(1, oid);</span>
+<span class="nc" id="L57">                        st2.setString(2, i.getProduct().getCode());</span>
+<span class="nc" id="L58">                        st2.setFloat(4, Float.parseFloat(df.format(i.getPrice())));</span>
+<span class="nc" id="L59">                        st2.setInt(5, i.getQuantity());</span>
+<span class="nc" id="L60">                        st2.setFloat(6, Float.parseFloat(df.format(i.getQuantity() * i.getPrice())));</span>
+<span class="nc" id="L61">                        st2.executeUpdate();</span>
+<span class="nc" id="L62">                    } catch (SQLException e) {</span>
+<span class="nc" id="L63">                        System.out.println(e);</span>
+<span class="nc" id="L64">                    }</span>
+<span class="nc" id="L65">                }</span>
+            }
+<span class="nc" id="L67">        } catch (SQLException e) {</span>
+<span class="nc" id="L68">            throw new SQLException(&quot;Error&quot;);</span>
+<span class="nc" id="L69">        }</span>
+
+//        //update so luong trong bang Product sau khi ban
+//        String sql3 = &quot;update storage set num_left = num_left - ? where kitID =  ? and size = ?&quot;;
+//        for (Item i : cart.getItems()) {
+//            try {
+//                PreparedStatement st3 = connection.prepareStatement(sql3);
+//                st3.setInt(1, i.getQuantity());
+//                st3.setString(2, i.getKit().getKitID());
+//                st3.setString(3, i.getSize());
+//                st3.executeUpdate();
+//            } catch (SQLException ex) {
+//                throw new SQLException(&quot;Error&quot;);
+//            }
+//        }
+<span class="nc" id="L84">    }</span>
+
+    public int updateConfirm(int oid, int status) throws Exception{
+        String sql;
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (status == 0) {</span>
+<span class="nc" id="L89">            sql = &quot;UPDATE dbo.[Order] SET status = ?, shipDate = DATEADD(day, 5, orderDate) WHERE order_id = ?&quot;;</span>
+        } else {
+<span class="nc" id="L91">            sql = &quot;UPDATE dbo.[Order] SET status = ?, shipDate = GETDATE() WHERE order_id = ?&quot;;</span>
+        }
+        try {
+<span class="nc" id="L94">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L95">            st.setInt(1, status);</span>
+<span class="nc" id="L96">            st.setInt(2, oid);</span>
+<span class="nc" id="L97">            return st.executeUpdate();</span>
+<span class="nc" id="L98">        } catch (SQLException e) {</span>
+<span class="nc" id="L99">            throw new SQLException(&quot;Error&quot;);</span>
+        }
+    }
+
+    public int getOrderNum(String username) {
+<span class="nc" id="L104">        int orderNum = 0;</span>
+<span class="nc" id="L105">        String sql = &quot;SELECT Username, COUNT(order_id) AS orderNum FROM dbo.[Order] WHERE username = ? AND MONTH(orderDate) = MONTH(GETDATE()) GROUP BY username&quot;;</span>
+        try {
+<span class="nc" id="L107">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L108">            st.setString(1, username);</span>
+<span class="nc" id="L109">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L111">                orderNum = rs.getInt(2);</span>
+            }
+<span class="nc" id="L113">        } catch (SQLException ex) {</span>
+<span class="nc" id="L114">            System.out.println(ex);</span>
+<span class="nc" id="L115">        }</span>
+<span class="nc" id="L116">        return orderNum;</span>
+    }
+
+    public Order getOrderByID(int oid) {
+<span class="nc" id="L120">        Order o = new Order();</span>
+<span class="nc" id="L121">        String sql = &quot;SELECT * FROM dbo.[Order] WHERE order_id = ?&quot;;</span>
+        try {
+<span class="nc" id="L123">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L124">            st.setInt(1, oid);</span>
+<span class="nc" id="L125">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L127">                o.setOid(rs.getInt(1));</span>
+<span class="nc" id="L128">                o.setOdate(rs.getString(2));</span>
+<span class="nc" id="L129">                o.setSdate(rs.getString(3));</span>
+<span class="nc" id="L130">                o.setUsername(rs.getString(4));</span>
+<span class="nc" id="L131">                o.setPayment(rs.getFloat(5));</span>
+<span class="nc" id="L132">                o.setShipping(rs.getFloat(6));</span>
+<span class="nc" id="L133">                o.setTotal(rs.getFloat(7));</span>
+<span class="nc" id="L134">                o.setStatus(rs.getInt(8));</span>
+            }
+<span class="nc" id="L136">        } catch (SQLException ex) {</span>
+<span class="nc" id="L137">            System.out.println(ex);</span>
+<span class="nc" id="L138">        }</span>
+<span class="nc" id="L139">        return o;</span>
+    }
+
+    public List&lt;Order&gt; getAllOrder(String username) {
+<span class="nc" id="L143">        List&lt;Order&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L144">        String sql = &quot;SELECT * FROM dbo.[Order] &quot;;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (username != &quot;&quot;) {</span>
+<span class="nc" id="L146">            sql = sql.concat(&quot; WHERE Username = '&quot; + username + &quot;' &quot;);</span>
+        }
+<span class="nc" id="L148">        sql = sql.concat(&quot; ORDER BY order_id DESC&quot;);</span>
+        try {
+<span class="nc" id="L150">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L151">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L153">                Order o = new Order();</span>
+<span class="nc" id="L154">                o.setOid(rs.getInt(1));</span>
+<span class="nc" id="L155">                o.setOdate(rs.getString(2));</span>
+<span class="nc" id="L156">                o.setSdate(rs.getString(3));</span>
+<span class="nc" id="L157">                o.setUsername(username);</span>
+<span class="nc" id="L158">                o.setPayment(rs.getFloat(5));</span>
+<span class="nc" id="L159">                o.setShipping(rs.getFloat(6));</span>
+<span class="nc" id="L160">                o.setTotal(rs.getFloat(7));</span>
+<span class="nc" id="L161">                o.setStatus(rs.getInt(8));</span>
+<span class="nc" id="L162">                list.add(o);</span>
+<span class="nc" id="L163">            }</span>
+<span class="nc" id="L164">        } catch (SQLException ex) {</span>
+<span class="nc" id="L165">            System.out.println(ex);</span>
+<span class="nc" id="L166">        }</span>
+<span class="nc" id="L167">        return list;</span>
+    }
+
+    public List&lt;Item&gt; getDetails(int oid) {
+<span class="nc" id="L171">        List&lt;Item&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L172">        String sql = &quot;SELECT * FROM dbo.orderDetails WHERE order_id = ? &quot;;</span>
+        try {
+<span class="nc" id="L174">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L175">            st.setInt(1, oid);</span>
+<span class="nc" id="L176">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L178">                Item i = new Item();</span>
+<span class="nc" id="L179">                ProductDAO pdb = new ProductDAO();</span>
+<span class="nc" id="L180">                i.setProduct(pdb.getProductsById(rs.getString(2)));</span>
+<span class="nc" id="L181">                i.setPrice(rs.getFloat(4));</span>
+<span class="nc" id="L182">                i.setQuantity(rs.getInt(3));</span>
+<span class="nc" id="L183">                list.add(i);</span>
+<span class="nc" id="L184">            }</span>
+<span class="nc" id="L185">        } catch (SQLException e) {</span>
+<span class="nc" id="L186">            System.out.println(e);</span>
+<span class="nc" id="L187">        }</span>
+<span class="nc" id="L188">        return list;</span>
+    }
+
+    public Map&lt;String, Integer&gt; getMostBuy(String username) {
+<span class="nc" id="L192">        Map&lt;String, Integer&gt; most = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L193">        String sql = &quot;SELECT TOP 1 code, SUM(quantity) AS num_of_bought\n&quot; +</span>
+&quot;                FROM dbo.[Order] INNER JOIN dbo.orderDetails ON orderDetails.order_id = dbo.[Order].order_id\n&quot; +
+&quot;                WHERE username = 'mai' GROUP BY code ORDER BY num_of_bought DESC&quot;;
+        try {
+<span class="nc" id="L197">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L198">            st.setString(1, username);</span>
+<span class="nc" id="L199">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L201">                most.put(rs.getString(1), rs.getInt(2));</span>
+            }
+<span class="nc" id="L203">        } catch (SQLException e) {</span>
+<span class="nc" id="L204">            System.out.println(e);</span>
+<span class="nc" id="L205">        }</span>
+<span class="nc" id="L206">        return most;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

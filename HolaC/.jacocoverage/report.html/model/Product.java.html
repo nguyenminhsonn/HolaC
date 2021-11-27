@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Product.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Product.java</span></div><h1>Product.java</h1><pre class="source lang-java linenums">package model;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ *
+ * @author admin
+ */
+public class Product implements Serializable{
+    private String code, name, img, info;
+    private int quantity;
+    private int firstPrice, secondPrice, id_Pro;
+    private SecondMenu idSecond;
+
+<span class="fc" id="L16">    public Product() {</span>
+<span class="fc" id="L17">    }</span>
+
+<span class="fc" id="L19">    public Product(String code, String name, String img, String info, int quantity, int firstPrice, int secondPrice, int id_Pro, SecondMenu idSecond) {</span>
+<span class="fc" id="L20">        this.code = code;</span>
+<span class="fc" id="L21">        this.name = name;</span>
+<span class="fc" id="L22">        this.img = img;</span>
+<span class="fc" id="L23">        this.info = info;</span>
+<span class="fc" id="L24">        this.quantity = quantity;</span>
+<span class="fc" id="L25">        this.firstPrice = firstPrice;</span>
+<span class="fc" id="L26">        this.secondPrice = secondPrice;</span>
+<span class="fc" id="L27">        this.id_Pro = id_Pro;</span>
+<span class="fc" id="L28">        this.idSecond = idSecond;</span>
+<span class="fc" id="L29">    }</span>
+
+    public int getId_Pro() {
+<span class="nc" id="L32">        return id_Pro;</span>
+    }
+
+    public void setId_Pro(int id_Pro) {
+<span class="fc" id="L36">        this.id_Pro = id_Pro;</span>
+<span class="fc" id="L37">    }</span>
+    
+    
+
+    public int getQuantity() {
+<span class="nc" id="L42">        return quantity;</span>
+    }
+
+    public void setQuantity(int quantity) {
+<span class="fc" id="L46">        this.quantity = quantity;</span>
+<span class="fc" id="L47">    }</span>
+
+    
+
+    public String getCode() {
+<span class="fc" id="L52">        return code;</span>
+    }
+
+    public void setCode(String code) {
+<span class="fc" id="L56">        this.code = code;</span>
+<span class="fc" id="L57">    }</span>
+
+    public String getName() {
+<span class="fc" id="L60">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L64">        this.name = name;</span>
+<span class="fc" id="L65">    }</span>
+
+    public String getImg() {
+<span class="nc" id="L68">        return img;</span>
+    }
+
+    public void setImg(String img) {
+<span class="fc" id="L72">        this.img = img;</span>
+<span class="fc" id="L73">    }</span>
+
+    public String getInfo() {
+<span class="nc" id="L76">        return info;</span>
+    }
+
+    public void setInfo(String info) {
+<span class="fc" id="L80">        this.info = info;</span>
+<span class="fc" id="L81">    }</span>
+
+    public int getFirstPrice() {
+<span class="nc" id="L84">        return firstPrice;</span>
+    }
+
+    public void setFirstPrice(int firstPrice) {
+<span class="fc" id="L88">        this.firstPrice = firstPrice;</span>
+<span class="fc" id="L89">    }</span>
+
+    public int getSecondPrice() {
+<span class="nc" id="L92">        return secondPrice;</span>
+    }
+
+    public void setSecondPrice(int secondPrice) {
+<span class="fc" id="L96">        this.secondPrice = secondPrice;</span>
+<span class="fc" id="L97">    }</span>
+
+    public SecondMenu getIdSecond() {
+<span class="fc" id="L100">        return idSecond;</span>
+    }
+
+    public void setIdSecond(SecondMenu idSecond) {
+<span class="fc" id="L104">        this.idSecond = idSecond;</span>
+<span class="fc" id="L105">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L109">        return &quot;Product{&quot; + &quot;code=&quot; + code + &quot;, name=&quot; + name + &quot;, img=&quot; + img + &quot;, info=&quot; + info + &quot;, quantity=&quot; + quantity + &quot;, firstPrice=&quot; + firstPrice + &quot;, secondPrice=&quot; + secondPrice + &quot;, id_Pro=&quot; + id_Pro + &quot;, idSecond=&quot; + idSecond + '}';</span>
+    }
+
+    
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L116">        int hash = 3;</span>
+<span class="nc" id="L117">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L123">            return true;</span>
+        }
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L126">            return false;</span>
+        }
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L129">            return false;</span>
+        }
+<span class="fc" id="L131">        final Product other = (Product) obj;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (this.quantity != other.quantity) {</span>
+<span class="nc" id="L133">            return false;</span>
+        }
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (this.firstPrice != other.firstPrice) {</span>
+<span class="nc" id="L136">            return false;</span>
+        }
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (this.secondPrice != other.secondPrice) {</span>
+<span class="nc" id="L139">            return false;</span>
+        }
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (this.id_Pro != other.id_Pro) {</span>
+<span class="nc" id="L142">            return false;</span>
+        }
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (!Objects.equals(this.code, other.code)) {</span>
+<span class="nc" id="L145">            return false;</span>
+        }
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (!Objects.equals(this.name, other.name)) {</span>
+<span class="nc" id="L148">            return false;</span>
+        }
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (!Objects.equals(this.img, other.img)) {</span>
+<span class="nc" id="L151">            return false;</span>
+        }
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (!Objects.equals(this.info, other.info)) {</span>
+<span class="nc" id="L154">            return false;</span>
+        }
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (!Objects.equals(this.idSecond, other.idSecond)) {</span>
+<span class="nc" id="L157">            return false;</span>
+        }
+<span class="fc" id="L159">        return true;</span>
+    }
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

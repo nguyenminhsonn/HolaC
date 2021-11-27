@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CartDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">dal</a> &gt; <span class="el_source">CartDAO.java</span></div><h1>CartDAO.java</h1><pre class="source lang-java linenums">package dal;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import model.Cart;
+import model.FirstMenu;
+import model.Item;
+import model.Product;
+import model.SecondMenu;
+
+/**
+ *
+ * @author admin
+ */
+<span class="nc" id="L17">public class CartDAO extends DBContext {</span>
+
+<span class="nc" id="L19">    DecimalFormat df = new DecimalFormat(&quot;#.00&quot;);</span>
+
+    public Cart getCart(String username) {
+
+<span class="nc" id="L23">        Cart cart = new Cart(username);</span>
+<span class="nc" id="L24">        String sql = &quot;SELECT p.*,s.brand,f.id_firstMenu,f.Categorize,c.* FROM Product p\n&quot;</span>
+                + &quot;INNER JOIN SecondMenu s ON s.id_secondMenu = p.id_secondMenu\n&quot;
+                + &quot;INNER JOIN FirstMenu f ON f.id_firstMenu = s.id_secondMenu\n&quot;
+                + &quot;INNER JOIN dbo.cart c ON p.code = c.code where username = ?&quot;;
+        try {
+<span class="nc" id="L29">            PreparedStatement st = connection.prepareStatement(sql);</span>
+<span class="nc" id="L30">            st.setString(1, username);</span>
+<span class="nc" id="L31">            ResultSet rs = st.executeQuery();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L33">                Product p = new Product(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(9), new SecondMenu(rs.getInt(8), rs.getString(10), new FirstMenu(rs.getInt(11), rs.getString(12))));</span>
+<span class="nc" id="L34">                int quantity = rs.getInt(14);</span>
+                float price;
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (p.getSecondPrice() == 0) {</span>
+<span class="nc" id="L37">                    price = p.getFirstPrice();</span>
+                } else {
+<span class="nc" id="L39">                    price = p.getSecondPrice();</span>
+                }
+<span class="nc" id="L41">                Item t = new Item(p, quantity, price);</span>
+<span class="nc" id="L42">                cart.addItem(t);</span>
+<span class="nc" id="L43">            }</span>
+<span class="nc" id="L44">        } catch (SQLException e) {</span>
+<span class="nc" id="L45">            System.out.println(e);</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">        return cart;</span>
+    }
+
+    public void updateCart(Cart cart) {
+<span class="nc" id="L51">        String sql1 = &quot;DELETE FROM dbo.cart WHERE username = ?&quot;;</span>
+        try {
+<span class="nc" id="L53">            PreparedStatement st1 = connection.prepareStatement(sql1);</span>
+<span class="nc" id="L54">            st1.setString(1, cart.getUsername());</span>
+<span class="nc" id="L55">            st1.executeQuery();</span>
+<span class="nc" id="L56">        } catch (SQLException e) {</span>
+<span class="nc" id="L57">            System.out.println(e);</span>
+<span class="nc" id="L58">        }</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        for (int i = 0; i &lt; cart.getItems().size(); i++) {</span>
+<span class="nc" id="L60">            String sql2 = &quot;INSERT INTO dbo.cart VALUES (?,?,?,?,?,ROUND(?, 2),ROUND(?, 2))&quot;;</span>
+<span class="nc" id="L61">            Item t = cart.getItems().get(i);</span>
+            try {
+<span class="nc" id="L63">                PreparedStatement st2 = connection.prepareStatement(sql2);</span>
+<span class="nc" id="L64">                st2.setString(1, t.getProduct().getImg());</span>
+<span class="nc" id="L65">                st2.setInt(2, t.getQuantity());</span>
+<span class="nc" id="L66">                st2.setFloat(3, Float.parseFloat(df.format(t.getPrice())) * t.getQuantity());</span>
+<span class="nc" id="L67">                st2.setFloat(4, Float.parseFloat(df.format(t.getPrice())));</span>
+<span class="nc" id="L68">                st2.setString(5, t.getProduct().getCode());</span>
+<span class="nc" id="L69">                st2.setString(6, cart.getUsername());</span>
+<span class="nc" id="L70">                st2.executeQuery();</span>
+<span class="nc" id="L71">            } catch (SQLException e) {</span>
+<span class="nc" id="L72">                System.out.println(e);</span>
+<span class="nc" id="L73">            }</span>
+        }
+<span class="nc" id="L75">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

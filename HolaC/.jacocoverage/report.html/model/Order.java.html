@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Order.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Order.java</span></div><h1>Order.java</h1><pre class="source lang-java linenums">package model;
+
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
+
+/**
+ *
+ * @author admin
+ */
+public class Order implements Serializable{
+    private int oid;
+    private String odate, sdate;
+    private String username;
+    private float payment, shipping, total;
+    private int status;
+<span class="nc" id="L21">    DecimalFormat df = new DecimalFormat(&quot;#.00&quot;);</span>
+    
+<span class="nc" id="L23">    public Order() {</span>
+<span class="nc" id="L24">        this.status = 0;</span>
+<span class="nc" id="L25">    }</span>
+    
+<span class="nc" id="L27">    public Order(int oid, String username, float payment, float shipping, float total) {</span>
+        
+<span class="nc" id="L29">        this.oid = oid;</span>
+        
+<span class="nc" id="L31">        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L32">        Date date = new Date();</span>
+        //Given Date in String format
+<span class="nc" id="L34">        this.odate = sdf.format(date);</span>
+        //Specifying date format that matches the given date
+
+<span class="nc" id="L37">        Calendar c = Calendar.getInstance();</span>
+        try {
+            //Setting the date to the given date
+<span class="nc" id="L40">            c.setTime(sdf.parse(odate));</span>
+<span class="nc" id="L41">        } catch (ParseException e) {</span>
+<span class="nc" id="L42">            e.printStackTrace();</span>
+<span class="nc" id="L43">        }</span>
+
+        //Number of Days to add
+<span class="nc" id="L46">        c.add(Calendar.DAY_OF_MONTH, 5);</span>
+        //Date after adding the days to the given date
+<span class="nc" id="L48">        this.sdate = sdf.format(c.getTime());</span>
+
+<span class="nc" id="L50">        this.username = username;</span>
+<span class="nc" id="L51">        this.payment = Float.parseFloat(df.format(payment));</span>
+<span class="nc" id="L52">        this.shipping = Float.parseFloat(df.format(shipping));</span>
+<span class="nc" id="L53">        this.total = Float.parseFloat(df.format(total));</span>
+<span class="nc" id="L54">        this.status = 0;</span>
+<span class="nc" id="L55">    }</span>
+    
+    public int getOid() {
+<span class="nc" id="L58">        return oid;</span>
+    }
+
+    public void setOid(int oid) {
+<span class="nc" id="L62">        this.oid = oid;</span>
+<span class="nc" id="L63">    }</span>
+
+    public String getOdate() {
+<span class="nc" id="L66">        return odate;</span>
+    }
+
+    public void setOdate(String odate) {
+<span class="nc" id="L70">        this.odate = odate;</span>
+<span class="nc" id="L71">    }</span>
+
+    public String getSdate() {
+<span class="nc" id="L74">        return sdate;</span>
+    }
+
+    public void setSdate(String sdate) {
+<span class="nc" id="L78">        this.sdate = sdate;</span>
+<span class="nc" id="L79">    }</span>
+
+    public String getUsername() {
+<span class="nc" id="L82">        return username;</span>
+    }
+
+    public void setUsername(String username) {
+<span class="nc" id="L86">        this.username = username;</span>
+<span class="nc" id="L87">    }</span>
+
+    public float getPayment() {
+<span class="nc" id="L90">        return payment;</span>
+    }
+
+    public void setPayment(float payment) {
+<span class="nc" id="L94">        this.payment = Float.parseFloat(df.format(payment));</span>
+<span class="nc" id="L95">    }</span>
+
+    public float getShipping() {
+<span class="nc" id="L98">        return shipping;</span>
+    }
+
+    public void setShipping(float shipping) {
+<span class="nc" id="L102">        this.shipping = Float.parseFloat(df.format(shipping));</span>
+<span class="nc" id="L103">    }</span>
+
+    public float getTotal() {
+<span class="nc" id="L106">        return total;</span>
+    }
+
+    public void setTotal(float total) {
+<span class="nc" id="L110">        this.total = Float.parseFloat(df.format(total));</span>
+<span class="nc" id="L111">    }</span>
+
+    public int getStatus() {
+<span class="nc" id="L114">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L118">        this.status = status;</span>
+<span class="nc" id="L119">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L123">        return &quot;Order{&quot; + &quot;oid=&quot; + oid + &quot;, odate=&quot; + odate + &quot;, sdate=&quot; + sdate + &quot;, username=&quot; + username + &quot;, status=&quot; + status + &quot;, payment=&quot; + payment + &quot;, shipping=&quot; + shipping + &quot;, total=&quot; + total + '}';</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L128">        int hash = 7;</span>
+<span class="nc" id="L129">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L135">            return true;</span>
+        }
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L138">            return false;</span>
+        }
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L141">            return false;</span>
+        }
+<span class="nc" id="L143">        final Order other = (Order) obj;</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (this.oid != other.oid) {</span>
+<span class="nc" id="L145">            return false;</span>
+        }
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (Float.floatToIntBits(this.payment) != Float.floatToIntBits(other.payment)) {</span>
+<span class="nc" id="L148">            return false;</span>
+        }
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (Float.floatToIntBits(this.shipping) != Float.floatToIntBits(other.shipping)) {</span>
+<span class="nc" id="L151">            return false;</span>
+        }
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (Float.floatToIntBits(this.total) != Float.floatToIntBits(other.total)) {</span>
+<span class="nc" id="L154">            return false;</span>
+        }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (this.status != other.status) {</span>
+<span class="nc" id="L157">            return false;</span>
+        }
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (!Objects.equals(this.odate, other.odate)) {</span>
+<span class="nc" id="L160">            return false;</span>
+        }
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (!Objects.equals(this.sdate, other.sdate)) {</span>
+<span class="nc" id="L163">            return false;</span>
+        }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (!Objects.equals(this.username, other.username)) {</span>
+<span class="nc" id="L166">            return false;</span>
+        }
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!Objects.equals(this.df, other.df)) {</span>
+<span class="nc" id="L169">            return false;</span>
+        }
+<span class="nc" id="L171">        return true;</span>
+    }
+    
+    
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">package model;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ *
+ * @author admin
+ */
+public class Account implements Serializable{
+    private String username;
+    private String password;
+    private int role;
+
+<span class="nc" id="L15">    public Account() {</span>
+<span class="nc" id="L16">    }</span>
+
+<span class="fc" id="L18">    public Account(String username, String password, int role) {</span>
+<span class="fc" id="L19">        this.username = username;</span>
+<span class="fc" id="L20">        this.password = password;</span>
+<span class="fc" id="L21">        this.role = role;</span>
+<span class="fc" id="L22">    }</span>
+
+    public String getUsername() {
+<span class="fc" id="L25">        return username;</span>
+    }
+
+    public void setUsername(String username) {
+<span class="nc" id="L29">        this.username = username;</span>
+<span class="nc" id="L30">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L33">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="nc" id="L37">        this.password = password;</span>
+<span class="nc" id="L38">    }</span>
+
+    public int getRole() {
+<span class="fc" id="L41">        return role;</span>
+    }
+
+    public void setRole(int role) {
+<span class="nc" id="L45">        this.role = role;</span>
+<span class="nc" id="L46">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L50">        return &quot;Account{&quot; + &quot;username=&quot; + username + &quot;, password=&quot; + password + &quot;, role=&quot; + role + '}';</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L56">            return true;</span>
+        }
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L59">            return false;</span>
+        }
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L62">            return false;</span>
+        }
+<span class="fc" id="L64">        final Account other = (Account) obj;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (this.role != other.role) {</span>
+<span class="nc" id="L66">            return false;</span>
+        }
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (!Objects.equals(this.username, other.username)) {</span>
+<span class="nc" id="L69">            return false;</span>
+        }
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (!Objects.equals(this.password, other.password)) {</span>
+<span class="nc" id="L72">            return false;</span>
+        }
+<span class="fc" id="L74">        return true;</span>
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

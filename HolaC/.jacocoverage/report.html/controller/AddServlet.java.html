@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AddServlet.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProjectV5&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">AddServlet.java</span></div><h1>AddServlet.java</h1><pre class="source lang-java linenums">package controller;
+
+import dal.ProductDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author admin
+ */
+<span class="nc" id="L17">public class AddServlet extends HttpServlet {</span>
+
+    /**
+     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L30">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L31">        try (PrintWriter out = response.getWriter()) {</span>
+            /* TODO output your page here. You may use following sample code. */
+<span class="nc" id="L33">            out.println(&quot;&lt;!DOCTYPE html&gt;&quot;);</span>
+<span class="nc" id="L34">            out.println(&quot;&lt;html&gt;&quot;);</span>
+<span class="nc" id="L35">            out.println(&quot;&lt;head&gt;&quot;);</span>
+<span class="nc" id="L36">            out.println(&quot;&lt;title&gt;Servlet AddServlet&lt;/title&gt;&quot;);            </span>
+<span class="nc" id="L37">            out.println(&quot;&lt;/head&gt;&quot;);</span>
+<span class="nc" id="L38">            out.println(&quot;&lt;body&gt;&quot;);</span>
+<span class="nc" id="L39">            out.println(&quot;&lt;h1&gt;Servlet AddServlet at &quot; + request.getContextPath() + &quot;&lt;/h1&gt;&quot;);</span>
+<span class="nc" id="L40">            out.println(&quot;&lt;/body&gt;&quot;);</span>
+<span class="nc" id="L41">            out.println(&quot;&lt;/html&gt;&quot;);</span>
+<span class="nc bnc" id="L42" title="All 8 branches missed.">        }</span>
+<span class="nc" id="L43">    }</span>
+
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+    /**
+     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="nc" id="L57">        processRequest(request, response);</span>
+<span class="nc" id="L58">    }</span>
+
+    /**
+     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+//        processRequest(request, response);
+<span class="nc" id="L72">        String code = request.getParameter(&quot;code&quot;);</span>
+<span class="nc" id="L73">        String name = request.getParameter(&quot;name&quot;);</span>
+<span class="nc" id="L74">        String img = request.getParameter(&quot;image&quot;);</span>
+<span class="nc" id="L75">        int quantity = Integer.parseInt(request.getParameter(&quot;quantity&quot;));</span>
+<span class="nc" id="L76">        int fprice = Integer.parseInt(request.getParameter(&quot;price&quot;));</span>
+<span class="nc" id="L77">        String info = request.getParameter(&quot;info&quot;);</span>
+<span class="nc" id="L78">        int cid = Integer.parseInt(request.getParameter(&quot;category&quot;));</span>
+<span class="nc" id="L79">        String bid = request.getParameter(&quot;brand&quot;);</span>
+        
+<span class="nc" id="L81">        ProductDAO pDAO = new ProductDAO();</span>
+        try {
+<span class="nc" id="L83">            pDAO.insertPro(code, name, img, info, quantity, fprice, cid, bid);</span>
+<span class="nc" id="L84">        } catch (Exception ex) {</span>
+<span class="nc" id="L85">            Logger.getLogger(AddServlet.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">        response.sendRedirect(&quot;manage&quot;);</span>
+        
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+<span class="nc" id="L98">        return &quot;Short description&quot;;</span>
+    }// &lt;/editor-fold&gt;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
